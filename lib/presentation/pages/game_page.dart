@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:snake_and_ladder/data/cubit/calculation/calculation_cubit.dart';
+import 'package:snake_and_ladder/data/cubit/randomDice/randomdice_cubit.dart';
 import 'package:snake_and_ladder/presentation/widgets/board_view.dart';
 import 'package:snake_and_ladder/presentation/widgets/dice_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({Key? key}) : super(key: key);
@@ -24,15 +27,25 @@ class _GamePageState extends State<GamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            BoardView(
-              player1Color: Colors.red,
-              player2Color: Colors.blue,
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<CalculationCubit>(
+              create: (BuildContext context) => CalculationCubit(),
             ),
-            Dice(),
+            BlocProvider<RandomdiceCubit>(
+              create: (BuildContext context) => RandomdiceCubit(),
+            ),
           ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BoardView(
+                player1Color: Colors.red,
+                player2Color: Colors.blue,
+              ),
+              Dice(),
+            ],
+          ),
         ),
       ),
     );

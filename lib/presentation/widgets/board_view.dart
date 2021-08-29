@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:snake_and_ladder/data/cubit/calculation/calculation_cubit.dart';
 import 'package:snake_and_ladder/data/models/board_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BoardView extends StatelessWidget {
   final int _totalRows = 10;
@@ -18,8 +20,8 @@ class BoardView extends StatelessWidget {
     required this.player2Color,
   }) : super(key: key) {
     _cellsNumberList = boardModel.cellNumberList;
-    player1Loc = boardModel.searchIndexList(1);
-    player2Loc = boardModel.searchIndexList(1);
+    player1Loc = boardModel.searchIndexList(0);
+    player2Loc = boardModel.searchIndexList(0);
   }
 
   /// get width size of screen
@@ -43,6 +45,14 @@ class BoardView extends StatelessWidget {
     }
   }
 
+  final ScrollController controller = ScrollController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    // super.dispose();
+  }
+
   ///resize the Player size by width screen
   ///ukuran Player disesuaikan dengan lebar layar
   void dynamicPlayerSize(context) {
@@ -56,66 +66,135 @@ class BoardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    player1Loc = boardModel.searchIndexList(55);
+    // player1Loc = boardModel.searchIndexList(11);
+    // player2Loc = boardModel.searchIndexList(1);
     dynamicPlayerSize(context);
     int index = 0;
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        child: GridView.builder(
-          itemCount: _numberOfCells,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: _totalRows),
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(color: Colors.black, width: 0.1),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${_cellsNumberList[index]}',
-                    style: TextStyle(fontSize: dynamicFontSize(context)),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      AnimatedContainer(
-                        duration: Duration(seconds: 1),
-                        curve: Curves.linear,
+    return Flexible(
+      child: LayoutBuilder(
+        builder: (context, constraints) => SingleChildScrollView(
+          controller: controller,
+          child: Container(
+            width: constraints.maxWidth,
+            height: constraints.maxWidth, // / 10 * (_numberOfCells ~/ 10),
+            padding: const EdgeInsets.all(10),
+            child: Stack(
+              children: [
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: _numberOfCells,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: _totalRows),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(color: Colors.black, width: 0.1),
+                      ),
+                      child: Text(
+                        '${_cellsNumberList[index]}',
+                        style: TextStyle(fontSize: dynamicFontSize(context)),
+                      ),
+                    );
+                  },
+                ),
+                BlocConsumer<CalculationCubit, CalculationState>(
+                  listener: (context, state) {
+                    // TODO: implement listener
+                  },
+                  builder: (context, state) {
+                    return AnimatedPositioned(
+                      top: (boardModel.searchIndexList(state.number) ~/ 10) *
+                              (constraints.maxWidth / 10) +
+                          ((constraints.maxWidth / 25) -
+                              boardModel.searchIndexList(state.number) / 5),
+                      left: (boardModel.searchIndexList(state.number) % 10) *
+                              (constraints.maxWidth / 10) +
+                          ((constraints.maxWidth / 40) -
+                              (boardModel.searchIndexList(state.number) % 10)),
+                      child: Container(
                         width: playerSize,
                         height: playerSize,
                         decoration: BoxDecoration(
-                          color: (player1Loc == index)
-                              ? player1Color
-                              : Colors.transparent,
+                          color: player1Color,
                           shape: BoxShape.circle,
                         ),
                       ),
-                      AnimatedContainer(
-                        duration: Duration(seconds: 1),
-                        curve: Curves.linear,
-                        width: playerSize,
-                        height: playerSize,
-                        decoration: BoxDecoration(
-                          color: (player2Loc == index)
-                              ? player2Color
-                              : Colors.transparent,
-                          shape: BoxShape.circle,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
+                      duration: Duration(milliseconds: 400),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   player1Loc = boardModel.searchIndexList(55);
+  //   dynamicPlayerSize(context);
+  //   int index = 0;
+  //   return Flexible(
+  //     child: Container(
+  //       padding: const EdgeInsets.all(10),
+  //       child: GridView.builder(
+  //         itemCount: _numberOfCells,
+  //         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //             crossAxisCount: _totalRows),
+  //         itemBuilder: (context, index) {
+  //           return Container(
+  //             padding: const EdgeInsets.all(4),
+  //             decoration: BoxDecoration(
+  //               color: Colors.transparent,
+  //               border: Border.all(color: Colors.black, width: 0.1),
+  //             ),
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Text(
+  //                   '${_cellsNumberList[index]}',
+  //                   style: TextStyle(fontSize: dynamicFontSize(context)),
+  //                 ),
+  //                 Column(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                   children: [
+  //                     AnimatedContainer(
+  //                       duration: Duration(seconds: 1),
+  //                       curve: Curves.linear,
+  //                       width: playerSize,
+  //                       height: playerSize,
+  //                       decoration: BoxDecoration(
+  //                         color: (player1Loc == index)
+  //                             ? player1Color
+  //                             : Colors.transparent,
+  //                         shape: BoxShape.circle,
+  //                       ),
+  //                     ),
+  //                     AnimatedContainer(
+  //                       duration: Duration(seconds: 1),
+  //                       curve: Curves.linear,
+  //                       width: playerSize,
+  //                       height: playerSize,
+  //                       decoration: BoxDecoration(
+  //                         color: (player2Loc == index)
+  //                             ? player2Color
+  //                             : Colors.transparent,
+  //                         shape: BoxShape.circle,
+  //                       ),
+  //                     )
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
 }
