@@ -1,30 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:snake_and_ladder/data/cubit/calculation/calculation_cubit.dart';
-// import 'package:snake_and_ladder/data/cubit/randomDice/randomdice_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:snake_and_ladder/data/models/player_model.dart';
 
-class Dice extends StatefulWidget {
-  // const Dice({ Key? key }) : super(key: key);
+class Dice extends StatelessWidget {
+  Player player1;
+  Player player2;
+  Dice({Key? key, required this.player1, required this.player2})
+      : super(key: key);
 
-  @override
-  State<Dice> createState() => _DiceState();
-}
-
-class _DiceState extends State<Dice> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CalculationCubit, CalculationState>(
       builder: (context, state) {
-        return GestureDetector(
-          onTap: () {
-            // context.read<RandomdiceCubit>().shuffle();
-            context.read<CalculationCubit>().increment();
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width / 8,
-            height: MediaQuery.of(context).size.height / 8,
-            color: Colors.grey,
-            child: dicePicture(state.dice),
+        return Material(
+          elevation: 5,
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.brown[600],
+          child: InkWell(
+            onTap: () {
+              if (player1.isMyTurn == true) {
+                context.read<CalculationCubit>().increment();
+              } else {
+                context.read<CalculationCubit>().increment();
+              }
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                // shape: BoxShape.circle,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.all(10),
+              width: MediaQuery.of(context).size.width / 7,
+              height: MediaQuery.of(context).size.width / 7,
+              child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(child: dicePicture(state.dice))),
+            ),
           ),
         );
       },
