@@ -22,7 +22,7 @@ class _MyAppState extends State<App> {
   get circle => Container(
         height: circleSize,
         width: circleSize,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.yellow,
         ),
@@ -52,7 +52,7 @@ class _MyAppState extends State<App> {
               child: Stack(
                 children: [
                   GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: totalGrid,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -72,7 +72,7 @@ class _MyAppState extends State<App> {
                     left: (location % 3) * (constraints.maxWidth / 3) +
                         ((constraints.maxWidth / 6) - circleSize * .5),
                     child: circle,
-                    duration: Duration(milliseconds: 400),
+                    duration: const Duration(milliseconds: 400),
                   ),
                 ],
               ),

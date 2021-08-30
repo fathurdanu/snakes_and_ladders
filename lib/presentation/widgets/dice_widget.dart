@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake_and_ladder/data/models/player_model.dart';
 
 class Dice extends StatelessWidget {
-  Player player1;
-  Player player2;
-  Dice({Key? key, required this.player1, required this.player2})
+  final Player player1;
+  final Player player2;
+  const Dice({Key? key, required this.player1, required this.player2})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class Dice extends StatelessWidget {
                 // shape: BoxShape.circle,
                 borderRadius: BorderRadius.circular(10),
               ),
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width / 7,
               height: MediaQuery.of(context).size.width / 7,
               child: Material(

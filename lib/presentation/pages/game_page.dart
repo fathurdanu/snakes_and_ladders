@@ -14,8 +14,8 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   // late Color player1Color, player2Color;
-  Player player1 = new Player(color: Colors.red, isMyTurn: true);
-  Player player2 = new Player(color: Colors.blue);
+  Player player1 = Player(color: Colors.red, isMyTurn: true);
+  Player player2 = Player(color: Colors.blue);
 
   /// get width size of screen
   /// ambil ukuran lebar layar
@@ -36,7 +36,7 @@ class _GamePageState extends State<GamePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Classic Snakes and Ladders',
                 style: TextStyle(
                   color: Colors.black,
@@ -44,14 +44,14 @@ class _GamePageState extends State<GamePage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               BoardView(
                 player1: player1,
                 player2: player2,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Dice(

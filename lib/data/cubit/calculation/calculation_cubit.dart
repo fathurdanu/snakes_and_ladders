@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'dart:math';
-import 'dart:io';
 import 'package:snake_and_ladder/data/models/ladder_model.dart';
 import 'package:snake_and_ladder/data/models/player_model.dart';
 import 'package:snake_and_ladder/data/models/snake_model.dart';
@@ -15,42 +14,37 @@ class CalculationCubit extends Cubit<CalculationState> {
   Snake snake = Snake();
   Random rnd = Random();
   static const int _min = 1;
-  static const int _max = 6;
+  static const int _max = 7;
   Player player1;
   Player player2;
 
-  void climb(sum, player) {
+  void climb(sum, player, fuckingDice) {
     int top = ladder.ladderTop[ladder.ladderBottom.indexOf(sum)];
     player.location = top;
-    emit(CalculationState(dice: state.dice));
+    emit(CalculationState(dice: fuckingDice));
   }
 
-  void bite(sum, player) {
+  void bite(sum, player, fuckingDice) {
     int tail = snake.snakeTail[snake.snakeHead.indexOf(sum)];
     player.location = tail;
-    emit(CalculationState(dice: state.dice));
+    emit(CalculationState(dice: fuckingDice));
   }
 
   void increment() {
     int dice = shuffle();
-    int bantu;
     Player player;
     if (player1.isMyTurn == true) {
       player = player1;
-      bantu = 1;
     } else {
       player = player2;
-      bantu = 2;
     }
 
     int sum = player.location + dice;
-    print(
-        'player: $bantu, from: ${player.location}, dice: $dice, newLocation: now: ${player.location + dice}');
     if (sum < 100) {
       if (ladder.ladderBottom.contains(sum)) {
-        climb(sum, player);
+        climb(sum, player, dice);
       } else if (snake.snakeHead.contains(sum)) {
-        bite(sum, player);
+        bite(sum, player, dice);
       } else {
         player.location = sum;
         emit(CalculationState(dice: dice));

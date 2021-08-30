@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:snake_and_ladder/coba_coba.dart';
 import 'package:snake_and_ladder/presentation/pages/game_page.dart';
-import 'package:snake_and_ladder/presentation/router/router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:snake_and_ladder/presentation/router/router.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AppRouter _appRouter = AppRouter();
+  // final AppRouter _appRouter = AppRouter();
 
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: App(),
-      home: GamePage(), //sementara
+      home: const GamePage(), //sementara
       // onGenerateRoute: _appRouter.onGenerateRoute,
     );
   }

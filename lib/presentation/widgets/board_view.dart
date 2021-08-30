@@ -4,25 +4,41 @@ import 'package:snake_and_ladder/data/models/board_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:snake_and_ladder/data/models/player_model.dart';
 
-class BoardView extends StatelessWidget {
-  final int _totalRows = 10;
-  final int _numberOfCells = 100;
-  // late final Color player1Color, player2Color;
-  late final List<int> _cellsNumberList;
-  late double playerSize;
-  BoardModel boardModel = BoardModel();
-  Player player1;
-  Player player2;
-
-  /// Constructor, need colors for both players
-  /// Constructor, butuh warna untuk kedua player
-  BoardView({
+class BoardView extends StatefulWidget {
+  const BoardView({
     Key? key,
     required this.player1,
     required this.player2,
-  }) : super(key: key) {
+  }) : super(key: key);
+
+  final Player player1;
+  final Player player2;
+
+  @override
+  _BoardViewState createState() => _BoardViewState();
+}
+
+class _BoardViewState extends State<BoardView> {
+  final BoardModel boardModel = BoardModel();
+  List<int> _cellsNumberList = [];
+  late Player player1 = widget.player1;
+  late Player player2 = widget.player2;
+
+  @override
+  void initState() {
+    super.initState();
     _cellsNumberList = boardModel.cellNumberList;
+    player1 = widget.player1;
+    player2 = widget.player2;
   }
+
+  final int _totalRows = 10;
+  final int _numberOfCells = 100;
+  // late final Color player1Color, player2Color;
+  late double playerSize;
+
+  /// Constructor, need colors for both players
+  /// Constructor, butuh warna untuk kedua player
 
   /// get width size of screen
   /// ambil ukuran lebar layar
@@ -66,7 +82,6 @@ class BoardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     dynamicPlayerSize(context);
-    int index = 0;
     return Flexible(
       child: LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
@@ -83,7 +98,7 @@ class BoardView extends StatelessWidget {
                     color: Colors.brown[600],
                   ),
                   GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: _numberOfCells,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: _totalRows),
@@ -124,10 +139,10 @@ class BoardView extends StatelessWidget {
                                 (boardModel.searchIndexList(player1.location) %
                                     10)),
                         child: Container(
-                          padding: EdgeInsets.all(1),
+                          padding: const EdgeInsets.all(1),
                           width: playerSize,
                           height: playerSize,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
                           ),
@@ -138,7 +153,7 @@ class BoardView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        duration: Duration(milliseconds: 400),
+                        duration: const Duration(milliseconds: 400),
                       );
                     },
                   ),
@@ -159,10 +174,10 @@ class BoardView extends StatelessWidget {
                                 (boardModel.searchIndexList(player2.location) %
                                     10)),
                         child: Container(
-                          padding: EdgeInsets.all(1),
+                          padding: const EdgeInsets.all(1),
                           width: playerSize,
                           height: playerSize,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
                           ),
@@ -173,7 +188,7 @@ class BoardView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        duration: Duration(milliseconds: 400),
+                        duration: const Duration(milliseconds: 400),
                       );
                     },
                   ),
